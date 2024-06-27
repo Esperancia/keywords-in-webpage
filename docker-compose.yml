@@ -1,0 +1,29 @@
+version: '3.0'
+
+services:
+
+  mongodb:
+    image: mongo
+    container_name: mongo
+    restart: always
+    ports:
+      - 27017:27017
+    volumes:
+      - mongodb:/data/db
+      - configdb:/data/configdb
+
+  mypyapp:
+    build:
+      dockerfile: Dockerfile
+      context: .
+    container_name: mypyapp
+    volumes:
+      - "./:/var/www/"
+    ports:
+      - 5000:5000
+    depends_on:
+      - mongodb
+
+volumes:
+    mongodb:
+    configdb:
